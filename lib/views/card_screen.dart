@@ -37,6 +37,7 @@ class CardScreen extends StatelessWidget {
                   _builCardItem(context, products[index]),
             ),
           ),
+          _builCardSummery(context),
         ],
       ),
     );
@@ -155,7 +156,6 @@ class CardScreen extends StatelessWidget {
               ),
             ),
           ),
-          _builCardSummery(context),
         ],
       ),
     );
