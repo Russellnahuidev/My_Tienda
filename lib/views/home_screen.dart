@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
 import 'package:my_tienda/views/all_products_screen.dart';
+import 'package:my_tienda/views/card_screen.dart';
 import 'package:my_tienda/views/widgets/category_chips.dart';
 import 'package:my_tienda/views/widgets/custom_search_bar.dart';
 import 'package:my_tienda/views/widgets/product_grid.dart';
@@ -53,7 +54,7 @@ class HomeScreen extends StatelessWidget {
 
                   //card button
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => Get.to(() => CardScreen()),
                     icon: Icon(Icons.shopping_bag_outlined),
                   ),
 

@@ -129,7 +129,7 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                     if (product.oldPrice != null) ...[
-                      SizedBox(height: screenWidth * 0.01),
+                      SizedBox(width: screenWidth * 0.01),
                       Text(
                         '\$${product.oldPrice!.toStringAsFixed(2)}',
                         style: AppTextStyles.withColor(
