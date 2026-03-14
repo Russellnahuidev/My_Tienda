@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_tienda/models/product.dart';
+import 'package:my_tienda/views/product_detail_screen.dart';
 import 'package:my_tienda/views/widgets/product_card.dart';
 
 class ProductGrid extends StatelessWidget {
@@ -19,7 +20,12 @@ class ProductGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         final product = products[index];
         return GestureDetector(
-          onTap: () {},
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailScreen(product: product),
+            ),
+          ),
           child: ProductCard(product: product),
         );
       },
