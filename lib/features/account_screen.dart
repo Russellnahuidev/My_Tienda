@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/features/my_orders/view/screens/my_orders_screen.dart';
+import 'package:my_tienda/features/shippin_address/shipping_address_screen.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
 import 'package:my_tienda/features/setting_screen.dart';
 import 'package:my_tienda/features/signin_screen.dart';
@@ -109,7 +110,7 @@ class AccountScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final menuItems = [
       {'icon': Icons.shopping_bag_outlined, 'title': 'My Orders'},
-      {'icon': Icons.location_on_outlined, 'title': 'Shopping Adress'},
+      {'icon': Icons.location_on_outlined, 'title': 'Shipping Adress'},
       {'icon': Icons.help_outline, 'title': 'Help Ccenter'},
       {'icon': Icons.logout_outlined, 'title': 'Logout'},
     ];
@@ -154,8 +155,8 @@ class AccountScreen extends StatelessWidget {
                   _showLogoutDialog(context);
                 } else if (item['title'] == 'My Orders') {
                   Get.to(() => MyOrdersScreen());
-                } else if (item['title'] == 'Shopping Adress') {
-                  // navigation to Shopping Adress screen
+                } else if (item['title'] == 'Shipping Adress') {
+                  Get.to(() => ShippingAddressScreen());
                 } else if (item['title'] == 'Help Ccenter') {
                   // navigation to Help Ccenters screen
                 }
