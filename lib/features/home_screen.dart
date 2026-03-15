@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
-import 'package:my_tienda/views/all_products_screen.dart';
-import 'package:my_tienda/views/card_screen.dart';
-import 'package:my_tienda/views/widgets/category_chips.dart';
-import 'package:my_tienda/views/widgets/custom_search_bar.dart';
-import 'package:my_tienda/views/widgets/product_grid.dart';
-import 'package:my_tienda/views/widgets/sale_banner.dart';
+import 'package:my_tienda/features/all_products_screen.dart';
+import 'package:my_tienda/features/card_screen.dart';
+import 'package:my_tienda/features/notifications/view/notifications_screen.dart';
+import 'package:my_tienda/features/widgets/category_chips.dart';
+import 'package:my_tienda/features/widgets/custom_search_bar.dart';
+import 'package:my_tienda/features/widgets/product_grid.dart';
+import 'package:my_tienda/features/widgets/sale_banner.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -48,7 +49,7 @@ class HomeScreen extends StatelessWidget {
 
                   //notification icon
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => Get.to(() => NotificationsScreen()),
                     icon: Icon(Icons.notifications_outlined),
                   ),
 

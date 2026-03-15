@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
-import 'package:my_tienda/views/main_screen.dart';
-import 'package:my_tienda/views/widgets/custom_textfield.dart';
+import 'package:my_tienda/features/main_screen.dart';
+import 'package:my_tienda/features/widgets/custom_textfield.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});

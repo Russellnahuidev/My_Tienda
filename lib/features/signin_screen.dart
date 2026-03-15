@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
-import 'package:my_tienda/views/forgot_password_screen.dart';
-import 'package:my_tienda/views/main_screen.dart';
-import 'package:my_tienda/views/sign_up_screen.dart';
-import 'package:my_tienda/views/widgets/custom_textfield.dart';
+import 'package:my_tienda/features/forgot_password_screen.dart';
+import 'package:my_tienda/features/main_screen.dart';
+import 'package:my_tienda/features/sign_up_screen.dart';
+import 'package:my_tienda/features/widgets/custom_textfield.dart';
 
 class SigninScreen extends StatelessWidget {
   SigninScreen({super.key});

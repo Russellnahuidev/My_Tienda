@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
-import 'package:my_tienda/views/widgets/category_chips.dart';
-import 'package:my_tienda/views/widgets/filter_buttom_sheet.dart';
-import 'package:my_tienda/views/widgets/product_grid.dart';
+import 'package:my_tienda/features/widgets/filter_buttom_sheet.dart';
+import 'package:my_tienda/features/widgets/product_grid.dart';
 
-class ShoppingScreen extends StatelessWidget {
-  const ShoppingScreen({super.key});
+class AllProductsScreen extends StatelessWidget {
+  const AllProductsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: isDark ? Colors.white : Colors.black,
+          ),
+        ),
         title: Text(
-          'Shopping',
+          'All Products',
           style: AppTextStyles.withColor(
             AppTextStyles.h3,
             isDark ? Colors.white : Colors.black,
@@ -40,12 +48,7 @@ class ShoppingScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(padding: EdgeInsets.only(top: 16), child: CategoryChips()),
-          Expanded(child: ProductGrid()),
-        ],
-      ),
+      body: ProductGrid(),
     );
   }
 }

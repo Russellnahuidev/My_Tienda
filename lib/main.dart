@@ -5,7 +5,7 @@ import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/controllers/navigation_controller.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
 import 'package:my_tienda/utils/app_themes.dart';
-import 'package:my_tienda/views/splash_screen.dart';
+import 'package:my_tienda/features/splash_screen.dart';
 
 void main() async {
   await GetStorage.init();
