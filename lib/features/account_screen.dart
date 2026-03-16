@@ -12,44 +12,6 @@ import 'package:my_tienda/features/signin_screen.dart';
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'My Account',
-          style: AppTextStyles.withColor(
-            AppTextStyles.h3,
-            isDark ? Colors.white : Colors.black,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.to(() => SettingScreen()),
-            icon: Icon(
-              Icons.settings_outlined,
-              color: isDark ? Colors.white : Colors.black,
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildProfileSelection(context),
-
-            SizedBox(height: 16),
-
-            _buildMenuSection(context),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildProfileSelection(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -258,6 +220,44 @@ class AccountScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'My Account',
+          style: AppTextStyles.withColor(
+            AppTextStyles.h3,
+            isDark ? Colors.white : Colors.black,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => Get.to(() => SettingScreen()),
+            icon: Icon(
+              Icons.settings_outlined,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildProfileSelection(context),
+
+            SizedBox(height: 16),
+
+            _buildMenuSection(context),
           ],
         ),
       ),

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "187612306428",
+    "project_id": "my-tienda-7f6cb",
+    "storage_bucket": "my-tienda-7f6cb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187612306428:android:b03b7b321575b5d8b53079",
+        "android_client_info": {
+          "package_name": "com.example.my_tienda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187612306428-81c0cggojgst9cplqmam7co5aobhtgf6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIBMqWWF7hKUOfbgOIE_hgKTJM-C3OqHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187612306428-81c0cggojgst9cplqmam7co5aobhtgf6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
