@@ -57,7 +57,12 @@ class CheckoutScreen extends StatelessWidget {
           final orderNumber =
               'ORD${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}';
 
-          Get.to(() => OrderConfirmationScreen());
+          Get.to(
+            () => OrderConfirmationScreen(
+              orderNumber: orderNumber,
+              totalAmooun: 662.23,
+            ),
+          );
         },
       ),
     );
