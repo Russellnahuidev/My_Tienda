@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/features/edit_profile/screens/edit_profile_screen.dart';
+import 'package:my_tienda/features/help_center/views/screen/help_center_screen.dart';
 import 'package:my_tienda/features/my_orders/view/screens/my_orders_screen.dart';
 import 'package:my_tienda/features/shippin_address/shipping_address_screen.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
@@ -19,7 +20,7 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Account screen',
+          'My Account',
           style: AppTextStyles.withColor(
             AppTextStyles.h3,
             isDark ? Colors.white : Colors.black,
@@ -76,7 +77,7 @@ class AccountScreen extends StatelessWidget {
           SizedBox(height: 4),
 
           Text(
-            'russell.ñahui@gmail.comm',
+            'russell.ñahui@gmail.com',
             style: AppTextStyles.withColor(
               AppTextStyles.bodyMedium,
               isDark ? Colors.grey[400]! : Colors.grey[600]!,
@@ -97,7 +98,7 @@ class AccountScreen extends StatelessWidget {
             child: Text(
               'Edit Profile',
               style: AppTextStyles.withColor(
-                AppTextStyles.bodyMedium,
+                AppTextStyles.buttonMedium,
                 Theme.of(context).textTheme.bodyLarge!.color!,
               ),
             ),
@@ -159,7 +160,7 @@ class AccountScreen extends StatelessWidget {
                 } else if (item['title'] == 'Shipping Adress') {
                   Get.to(() => ShippingAddressScreen());
                 } else if (item['title'] == 'Help Ccenter') {
-                  // navigation to Help Ccenters screen
+                  Get.to(() => HelpCenterScreen());
                 }
               },
             ),
