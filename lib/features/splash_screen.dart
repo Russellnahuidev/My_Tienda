@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
-import 'package:my_tienda/views/main_screen.dart';
-import 'package:my_tienda/views/onboarding_screen.dart';
-import 'package:my_tienda/views/siging_screen.dart';
+import 'package:my_tienda/features/main_screen.dart';
+import 'package:my_tienda/features/onboarding_screen.dart';
+import 'package:my_tienda/features/signin_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   SplashScreen({super.key});
@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
       } else if (authController.isloggedIn) {
         Get.off(() => MainScreen());
       } else {
-        Get.off(() => SigingScreen());
+        Get.off(() => SigninScreen());
       }
     });
 
