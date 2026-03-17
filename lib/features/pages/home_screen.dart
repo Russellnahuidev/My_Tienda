@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
-import 'package:my_tienda/features/all_products_screen.dart';
-import 'package:my_tienda/features/card_screen.dart';
+import 'package:my_tienda/features/pages/all_products_screen.dart';
+import 'package:my_tienda/features/pages/card_screen.dart';
 import 'package:my_tienda/features/notifications/view/notifications_screen.dart';
 import 'package:my_tienda/features/widgets/category_chips.dart';
 import 'package:my_tienda/features/widgets/custom_search_bar.dart';

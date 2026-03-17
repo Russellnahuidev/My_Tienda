@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:my_tienda/features/home_screen.dart';
+import 'package:my_tienda/features/pages/home_screen.dart';
 import 'package:my_tienda/features/my_orders/view/screens/my_orders_screen.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
 

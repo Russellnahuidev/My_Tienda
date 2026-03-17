@@ -1,13 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/controllers/navigation_controller.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
+import 'package:my_tienda/firebase_options.dart';
 import 'package:my_tienda/utils/app_themes.dart';
-import 'package:my_tienda/features/splash_screen.dart';
+import 'package:my_tienda/features/pages/splash_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   Get.put(ThemeController());
   Get.put(AuthController());
