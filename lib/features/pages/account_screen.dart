@@ -12,8 +12,47 @@ import 'package:my_tienda/features/auth/signin_screen.dart';
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'My Account',
+          style: AppTextStyles.withColor(
+            AppTextStyles.h3,
+            isDark ? Colors.white : Colors.black,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => Get.to(() => SettingScreen()),
+            icon: Icon(
+              Icons.settings_outlined,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildProfileSelection(context),
+
+            SizedBox(height: 16),
+
+            _buildMenuSection(context),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildProfileSelection(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final AuthController authController = Get.find<AuthController>();
 
     return Container(
       width: double.infinity,
@@ -28,21 +67,24 @@ class AccountScreen extends StatelessWidget {
             radius: 50,
             backgroundImage: AssetImage('assets/images/avatar.jpg'),
           ),
-          Text(
-            'Russell Ñahui',
-            style: AppTextStyles.withColor(
-              AppTextStyles.h2,
-              Theme.of(context).textTheme.bodyLarge!.color!,
+          Obx(
+            () => Text(
+              authController.userName ?? 'User',
+              style: AppTextStyles.withColor(
+                AppTextStyles.h2,
+                Theme.of(context).textTheme.bodyLarge!.color!,
+              ),
             ),
           ),
 
           SizedBox(height: 4),
-
-          Text(
-            'russell.ñahui@gmail.com',
-            style: AppTextStyles.withColor(
-              AppTextStyles.bodyMedium,
-              isDark ? Colors.grey[400]! : Colors.grey[600]!,
+          Obx(
+            () => Text(
+              authController.userEmail ?? '',
+              style: AppTextStyles.withColor(
+                AppTextStyles.bodyMedium,
+                isDark ? Colors.grey[400]! : Colors.grey[600]!,
+              ),
             ),
           ),
 
@@ -257,44 +299,6 @@ class AccountScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'My Account',
-          style: AppTextStyles.withColor(
-            AppTextStyles.h3,
-            isDark ? Colors.white : Colors.black,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.to(() => SettingScreen()),
-            icon: Icon(
-              Icons.settings_outlined,
-              color: isDark ? Colors.white : Colors.black,
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildProfileSelection(context),
-
-            SizedBox(height: 16),
-
-            _buildMenuSection(context),
           ],
         ),
       ),

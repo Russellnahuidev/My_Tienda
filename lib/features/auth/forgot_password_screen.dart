@@ -151,7 +151,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         'Error',
         'An unexpected error occurred. Please try again.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     }

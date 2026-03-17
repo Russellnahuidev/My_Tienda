@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
 import 'package:my_tienda/features/pages/all_products_screen.dart';
 import 'package:my_tienda/features/pages/card_screen.dart';
@@ -29,21 +30,26 @@ class HomeScreen extends StatelessWidget {
                     backgroundImage: AssetImage('assets/images/avatar.jpg'),
                   ),
                   SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hollo Dani',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                  Expanded(
+                    flex: 2,
+                    child: GetX<AuthController>(
+                      builder: (authController) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hello ${authController.userName?.split(' ').first ?? 'User'}',
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                          Text(
+                            'Good Morning!',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Good Morning',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   Spacer(),
 
