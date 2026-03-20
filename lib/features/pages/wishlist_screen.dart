@@ -35,18 +35,18 @@ class WishlistScreen extends StatelessWidget {
           SliverToBoxAdapter(child: _buildSumarySection(context)),
 
           //whislist items
-          SliverPadding(
-            padding: EdgeInsets.all(16),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildWishListItem(
-                  context,
-                  products.where((p) => p.isFavorite).toList()[index],
-                ),
-                childCount: products.where((p) => p.isFavorite).length,
-              ),
-            ),
-          ),
+          // SliverPadding(
+          //   padding: EdgeInsets.all(16),
+          //   sliver: SliverList(
+          //     delegate: SliverChildBuilderDelegate(
+          //       (context, index) => _buildWishListItem(
+          //         context,
+          //         products.where((p) => p.isFavorite).toList()[index],
+          //       ),
+          //       childCount: products.where((p) => p.isFavorite).length,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -54,7 +54,7 @@ class WishlistScreen extends StatelessWidget {
 
   Widget _buildSumarySection(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final favoriteProducts = products.where((p) => p.isFavorite).length;
+    final favoriteProducts = products.length;
 
     return Container(
       padding: EdgeInsets.all(16),

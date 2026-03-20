@@ -64,16 +64,7 @@ class ProductDetailScreen extends StatelessWidget {
                 Positioned(
                   child: IconButton(
                     onPressed: () {},
-                    icon: Icon(
-                      product.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: product.isFavorite
-                          ? Theme.of(context).primaryColor
-                          : isDark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    icon: Icon(Icons.favorite_border, color: Colors.white),
                   ),
                 ),
               ],
