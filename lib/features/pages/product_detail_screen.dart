@@ -4,10 +4,15 @@ import 'package:my_tienda/utils/app_textstyles.dart';
 import 'package:my_tienda/features/widgets/size_selector.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final Product product;
   const ProductDetailScreen({super.key, required this.product});
 
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -35,8 +40,11 @@ class ProductDetailScreen extends StatelessWidget {
         //share button
         actions: [
           IconButton(
-            onPressed: () =>
-                _shareProduct(context, product.name, product.description),
+            onPressed: () => _shareProduct(
+              context,
+              widget.product.name,
+              widget.product.description,
+            ),
             icon: Icon(
               Icons.share_outlined,
               color: isDark ? Colors.white : Colors.black,
@@ -53,15 +61,38 @@ class ProductDetailScreen extends StatelessWidget {
                 //image
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Image.asset(
-                    product.imageUrl,
+                  child: Image.network(
+                    widget.product.imageUrl,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        child: Icon(
+                          Icons.image_not_supported,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
                   ),
                 ),
 
                 //favorite button
                 Positioned(
+                  right: screenWidth * 0.04,
+                  top: screenHeight * 0.04,
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.favorite_border, color: Colors.white),
@@ -81,46 +112,141 @@ class ProductDetailScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product.name,
+                          widget.product.name,
                           style: AppTextStyles.withColor(
                             AppTextStyles.h2,
                             Theme.of(context).textTheme.headlineMedium!.color!,
                           ),
                         ),
                       ),
-                      Text(
-                        '\$${product.price.toStringAsFixed(2)}',
-                        style: AppTextStyles.withColor(
-                          AppTextStyles.h2,
-                          Theme.of(context).textTheme.headlineMedium!.color!,
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            '\$${widget.product.price.toStringAsFixed(2)}',
+                            style: AppTextStyles.withColor(
+                              AppTextStyles.h2,
+                              Theme.of(
+                                context,
+                              ).textTheme.headlineMedium!.color!,
+                            ),
+                          ),
+                          if (widget.product.oldPrice != null &&
+                              widget.product.oldPrice! >
+                                  widget.product.price) ...[
+                            Text(
+                              '\$${widget.product.oldPrice!.toStringAsFixed(2)}',
+                              style:
+                                  AppTextStyles.withColor(
+                                    AppTextStyles.bodySmall,
+                                    isDark
+                                        ? Colors.grey[400]!
+                                        : Colors.grey[600]!,
+                                  ).copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                '${widget.product.discountPercentage}% OFF',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ],
                   ),
-                  Text(
-                    product.category,
-                    style: AppTextStyles.withColor(
-                      AppTextStyles.bodyMedium,
-                      isDark ? Colors.grey[400]! : Colors.grey[600]!,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        widget.product.category,
+                        style: AppTextStyles.withColor(
+                          AppTextStyles.bodyMedium,
+                          isDark ? Colors.grey[400]! : Colors.grey[600]!,
+                        ),
+                      ),
+                      if (widget.product.brand != null) ...[
+                        Text(
+                          ' . ',
+                          style: AppTextStyles.withColor(
+                            AppTextStyles.bodyMedium,
+                            isDark ? Colors.grey[400]! : Colors.grey[600]!,
+                          ),
+                        ),
+                        Text(
+                          widget.product.brand!,
+                          style: AppTextStyles.withColor(
+                            AppTextStyles.bodyMedium,
+                            Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
 
                   SizedBox(height: screenHeight * 0.02),
 
-                  Text(
-                    'Select Size',
-                    style: AppTextStyles.withColor(
-                      AppTextStyles.labelMedium,
-                      Theme.of(context).textTheme.bodyLarge!.color!,
+                  //stock status
+                  if (widget.product.stock >= 5 && widget.product.stock >= 0)
+                    Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Text(
+                        'Only ${widget.product.stock} lefy in stock!',
+                        style: AppTextStyles.withColor(
+                          AppTextStyles.bodySmall,
+                          Colors.orange,
+                        ),
+                      ),
+                    )
+                  else if (widget.product.stock == 0)
+                    Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Text(
+                        'Out of stock!',
+                        style: AppTextStyles.withColor(
+                          AppTextStyles.bodySmall,
+                          Colors.red,
+                        ),
+                      ),
                     ),
-                  ),
 
-                  SizedBox(height: screenHeight * 0.01),
+                  SizedBox(height: screenHeight * 0.02),
 
-                  //size slector
-                  SizeSelector(),
+                  //Show size selector only if sizes are available
+                  if (_getAvailableSizes().isNotEmpty) ...[
+                    Text(
+                      'Select Size',
+                      style: AppTextStyles.withColor(
+                        AppTextStyles.labelMedium,
+                        Theme.of(context).textTheme.bodyLarge!.color!,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
 
-                  SizedBox(height: screenHeight * 0.01),
+                    //size slector with product sizes
+                    SizeSelector(
+                      sizes: _getAvailableSizes(),
+                      onSizeSelected: (size) {
+                        //Handle size selection
+                        //you can ad size selection logic here
+                      },
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                  ],
+
+                  SizedBox(height: screenHeight * 0.02),
 
                   //Description
                   Text(
@@ -135,7 +261,7 @@ class ProductDetailScreen extends StatelessWidget {
 
                   //Description text
                   Text(
-                    product.description,
+                    widget.product.description,
                     style: AppTextStyles.withColor(
                       AppTextStyles.bodySmall,
                       isDark ? Colors.grey[400]! : Colors.grey[600]!,
@@ -220,5 +346,16 @@ class ProductDetailScreen extends StatelessWidget {
     } catch (e) {
       debugPrint('Error Sharing: $e');
     }
+  }
+
+  //Get availables sizes from product specifications
+  List<String> _getAvailableSizes() {
+    if (widget.product.specifications.containsKey('sizes')) {
+      final sizes = widget.product.specifications['sizes'];
+      if (sizes is List) {
+        return List<String>.from(sizes);
+      }
+    }
+    return [];
   }
 }

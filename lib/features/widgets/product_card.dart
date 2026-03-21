@@ -38,7 +38,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius: BorderRadiusGeometry.vertical(
                     top: Radius.circular(12),
                   ),
-                  child: Image.network(
+                  child: Image.asset(
                     product.imageUrl,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -54,18 +54,18 @@ class ProductCard extends StatelessWidget {
                         ),
                       );
                     },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
+                    // loadingBuilder: (context, child, loadingProgress) {
+                    //   if (loadingProgress == null) return child;
 
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
+                    //   return Center(
+                    //     child: CircularProgressIndicator(
+                    //       value: loadingProgress.expectedTotalBytes != null
+                    //           ? loadingProgress.cumulativeBytesLoaded /
+                    //                 loadingProgress.expectedTotalBytes!
+                    //           : null,
+                    //     ),
+                    //   );
+                    // },
                   ),
                 ),
               ),
