@@ -6,6 +6,7 @@ class FirestoreDataSeeder {
   //Seed all data
   static Future<void> seeAllData() async {
     await seedProducts();
+    await seedCategories();
   }
 
   //Add sample products to Firestore
@@ -381,6 +382,120 @@ class FirestoreDataSeeder {
       }
     } catch (e) {
       print('Error seeding products:$e');
+    }
+  }
+
+  //Add sample categories to Firestore
+  static Future<void> seedCategories() async {
+    final sampleCategories = [
+      {
+        'name': 'Electronics',
+        'displayName': 'Electronics',
+        'description': 'Electronics devices and gadgets',
+        'isActive': true,
+        'sortOrder': 1,
+        'subcategories': [
+          'Smartphones',
+          'Laptops',
+          'Tablets',
+          'Wearables',
+          'Audio',
+        ],
+        'metadata': {'color': '#2196F3', 'icon': 'Electronics'},
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      {
+        'name': 'Footwear',
+        'displayName': 'Footwear',
+        'description': 'Shoe and footwear for all occasions',
+        'isActive': true,
+        'sortOrder': 2,
+        'subcategories': [
+          'Running Shoes',
+          'Basketball Shoes',
+          'Lifestyle Shoes',
+          'Bots',
+          'sandals',
+        ],
+        'metadata': {'color': '#FF9800', 'icon': 'footwear'},
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      {
+        'name': 'Clothing',
+        'displayName': 'Clothing',
+        'description': 'Fashion and apparel for men and women',
+        'isActive': true,
+        'sortOrder': 3,
+        'subcategories': [
+          'T-Shirts',
+          'Jeans',
+          'Dresses',
+          'Jaket',
+          'Activewear',
+        ],
+        'metadata': {'color': '#E91E63', 'icon': 'clothing'},
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      {
+        'name': 'Accessories',
+        'displayName': 'Accessories',
+        'description': 'Fashion accessories and jewerly',
+        'isActive': true,
+        'sortOrder': 4,
+        'subcategories': ['Watches', 'Jewerly', 'Bags', 'Sunglases', 'Belts'],
+        'metadata': {'color': '#9C27B0', 'icon': 'accessries'},
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      {
+        'name': 'Home',
+        'displayName': 'Home & Living',
+        'description': 'Home decor and living essentials',
+        'isActive': true,
+        'sortOrder': 5,
+        'subcategories': ['Furniture', 'Decor', 'Kitche', 'Bessing', 'Storage'],
+        'metadata': {'color': '#4CAF50', 'icon': 'home'},
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      {
+        'name': 'Sports',
+        'displayName': 'Sports & Fitnes',
+        'description': 'Sports equipment and fitness gear',
+        'isActive': true,
+        'sortOrder': 6,
+        'subcategories': [
+          'Gym Equipment',
+          'Outdoor Sports',
+          'Team Sports',
+          'Fitness Apparel',
+        ],
+        'metadata': {'color': '#FF5722', 'icon': 'sports'},
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+    ];
+    try {
+      //Check if categories already exist
+      final existingCategories = await _firestore
+          .collection('categories')
+          .limit(1)
+          .get();
+
+      if (existingCategories.docs.isEmpty) {
+        //Add sample categories only if collection is empty
+        for (var category in sampleCategories) {
+          await _firestore.collection('categories').add(category);
+        }
+        print('Sample categories added to firestore succefully!');
+      } else {
+        print('Categories already exist in Firestore. Skipping seed data.');
+      }
+    } catch (e) {
+      print('Error seeding categories: $e');
     }
   }
 }

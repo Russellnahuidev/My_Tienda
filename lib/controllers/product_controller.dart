@@ -93,7 +93,7 @@ class ProductController extends GetxController {
   }
 
   //Filter products by category
-  void filterProductsByCategory(String category) {
+  void filterByCategory(String category) {
     _selectedCategory.value = category;
     _appyFilters();
     update(); //Notify Get Builder widgets
