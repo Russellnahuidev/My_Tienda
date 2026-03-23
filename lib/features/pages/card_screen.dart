@@ -66,8 +66,10 @@ class CardScreen extends StatelessWidget {
         children: [
           //product image
           ClipRRect(
-            borderRadius: BorderRadius.horizontal(left: Radius.circular(16)),
-            child: Image.asset(
+            borderRadius: BorderRadiusGeometry.horizontal(
+              left: Radius.circular(16),
+            ),
+            child: Image.network(
               product.imageUrl,
               width: 100,
               height: 100,

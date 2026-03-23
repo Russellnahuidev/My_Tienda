@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_tienda/controllers/wishlist_controller.dart';
 import 'package:my_tienda/models/product.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
 import 'package:my_tienda/features/widgets/size_selector.dart';
@@ -93,9 +95,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Positioned(
                   right: screenWidth * 0.04,
                   top: screenHeight * 0.04,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.favorite_border, color: Colors.white),
+                  child: GetBuilder<WishlistController>(
+                    id: 'wishlist_${widget.product.id}',
+                    builder: (wishlistcontroller) {
+                      final isInWishlist = wishlistcontroller
+                          .isProductInWishlist(widget.product.id);
+                      return IconButton(
+                        onPressed: () {
+                          wishlistcontroller.toggleWishlist(widget.product);
+                        },
+                        icon: Icon(
+                          isInWishlist ? Icons.favorite : Icons.favorite_border,
+                          color: isInWishlist
+                              ? Theme.of(context).primaryColor
+                              : (isDark ? Colors.white : Colors.black),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

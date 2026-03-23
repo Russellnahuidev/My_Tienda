@@ -7,6 +7,7 @@ import 'package:my_tienda/controllers/category_controller.dart';
 import 'package:my_tienda/controllers/navigation_controller.dart';
 import 'package:my_tienda/controllers/product_controller.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
+import 'package:my_tienda/controllers/wishlist_controller.dart';
 import 'package:my_tienda/firebase_options.dart';
 import 'package:my_tienda/utils/app_themes.dart';
 import 'package:my_tienda/features/pages/splash_screen.dart';
@@ -20,10 +21,11 @@ void main() async {
   Get.put(AuthController());
   Get.put(ProductController());
   Get.put(CategoryController());
+  Get.put(WishlistController());
   Get.put(NavigationController());
 
   //The line below is used to seed sample data to firestore (for testing only)
-  await FirestoreDataSeeder.seeAllData();
+  await FirestoreDataSeeder.seedAllData();
   runApp(const MyApp());
 }
 

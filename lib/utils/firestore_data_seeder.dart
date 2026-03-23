@@ -4,7 +4,7 @@ class FirestoreDataSeeder {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //Seed all data
-  static Future<void> seeAllData() async {
+  static Future<void> seedAllData() async {
     await seedProducts();
     await seedCategories();
   }
@@ -21,9 +21,11 @@ class FirestoreDataSeeder {
         'price': 129.99,
         'oldPrice': 179.99,
         'currency': 'USD',
-        'images': ['assets/images/shoe.jpg'],
+        'images': [
+          'https://media.istockphoto.com/id/1249496770/photo/running-shoes.jpg?s=1024x1024&w=is&k=20&c=pvn3pnD5rbSz7LT1zbCkgMd6PyEXeo7QdzjDCRNHunI=',
+        ],
         'primaryImage':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzSOrIHIncvVwcn86Yj1lG2no3rymRPhF1AQ&s',
+            'https://media.istockphoto.com/id/1249496770/photo/running-shoes.jpg?s=1024x1024&w=is&k=20&c=pvn3pnD5rbSz7LT1zbCkgMd6PyEXeo7QdzjDCRNHunI=',
         'brand': 'Nike',
         'sku': 'NIKE-AM270-001',
         'stock': 25,
@@ -62,9 +64,11 @@ class FirestoreDataSeeder {
         'price': 1299.99,
         'oldPrice': 1499.99,
         'currency': 'USD',
-        'images': ['assets/images/laptop.jpg'],
+        'images': [
+          'https://sm.pcmag.com/t/pcmag_me/review/a/apple-macb/apple-macbook-pro-14-inch-2024-m4_mjb1.1920.jpg',
+        ],
         'primaryImage':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzSOrIHIncvVwcn86Yj1lG2no3rymRPhF1AQ&s',
+            'https://sm.pcmag.com/t/pcmag_me/review/a/apple-macb/apple-macbook-pro-14-inch-2024-m4_mjb1.1920.jpg',
         'brand': 'Apple',
         'sku': 'APLE-MBP13-001',
         'stock': 15,
@@ -101,9 +105,11 @@ class FirestoreDataSeeder {
         'subCategory': 'Basketball Shoes',
         'price': 170.00,
         'currency': 'USD',
-        'images': ['assets/images/shoe2.jpg'],
+        'images': [
+          'https://www.manelsanchez.com/uploads/media/images/800x800/air-jordan-1-retro-high-rare-air-400-soar-blue-black-white-15.jpg',
+        ],
         'primaryImage':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzSOrIHIncvVwcn86Yj1lG2no3rymRPhF1AQ&s',
+            'https://www.manelsanchez.com/uploads/media/images/800x800/air-jordan-1-retro-high-rare-air-400-soar-blue-black-white-15.jpg',
         'brand': 'Jordan',
         'sku': 'JORDAN-AJ1-001',
         'stock': 30,
@@ -139,9 +145,11 @@ class FirestoreDataSeeder {
         'subCategory': 'Smartphones',
         'price': 999.99,
         'currency': 'USD',
-        'images': ['assets/images/phone.jpg'],
+        'images': [
+          'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-17-pro-max-1.jpg',
+        ],
         'primaryImage':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzSOrIHIncvVwcn86Yj1lG2no3rymRPhF1AQ&s',
+            'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-17-pro-max-1.jpg',
         'brand': 'Apple',
         'sku': 'APPLE-IP15P-001',
         'stock': 20,
@@ -178,9 +186,11 @@ class FirestoreDataSeeder {
         'price': 249.99,
         'oldPrice': 299.99,
         'currency': 'USD',
-        'images': ['assets/images/watch.jpg'],
+        'images': [
+          'https://unaluka.com/cdn/shop/files/81UQDoHG7pL._AC_SL1500_1200x1200.jpg?v=1745421065',
+        ],
         'primaryImage':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzSOrIHIncvVwcn86Yj1lG2no3rymRPhF1AQ&s',
+            'https://unaluka.com/cdn/shop/files/81UQDoHG7pL._AC_SL1500_1200x1200.jpg?v=1745421065',
         'brand': 'samsung',
         'sku': 'SAMSUNG-GW-001',
         'stock': 35,
@@ -218,9 +228,11 @@ class FirestoreDataSeeder {
         'price': 29.99,
         'oldPrice': 39.99,
         'currency': 'USD',
-        'images': ['assets/images/tshirt.jpg'],
+        'images': [
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOpfi6vjE1c9avHLFsIhXn3CSmrEE1DQxTkw&s',
+        ],
         'primaryImage':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzSOrIHIncvVwcn86Yj1lG2no3rymRPhF1AQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOpfi6vjE1c9avHLFsIhXn3CSmrEE1DQxTkw&s',
         'brand': 'Nike',
         'sku': 'NIKE-TSHIRT-001',
         'stock': 50,
@@ -257,8 +269,11 @@ class FirestoreDataSeeder {
         'price': 199.99,
         'oldPrice': 249.99,
         'currency': 'USD',
-        'images': ['assets/images/headphones.jpg'],
-        'primaryImage': 'assets/images/headphones.jpg',
+        'images': [
+          'https://i5.walmartimages.com/seo/VILINICE-Upgraded-Noise-Canceling-Headphones-Wireless-Bluetooth-Headphones-with-Microphone-ANC-Over-ear-Headphones-for-Travel-Sport_5cec40fc-4e49-445f-bf62-e29a0d5a1f39.e1737e94ee5402264512a2055e5cf5b8.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
+        ],
+        'primaryImage':
+            'https://i5.walmartimages.com/seo/VILINICE-Upgraded-Noise-Canceling-Headphones-Wireless-Bluetooth-Headphones-with-Microphone-ANC-Over-ear-Headphones-for-Travel-Sport_5cec40fc-4e49-445f-bf62-e29a0d5a1f39.e1737e94ee5402264512a2055e5cf5b8.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
         'brand': 'Sony',
         'sku': 'SONY-WH-001',
         'stock': 30,
@@ -295,8 +310,11 @@ class FirestoreDataSeeder {
         'subCategory': 'Bags',
         'price': 149.99,
         'currency': 'USD',
-        'images': ['assets/images/handbag.jpg'],
-        'primaryImage': 'assets/images/handbag.jpg',
+        'images': [
+          'https://5.imimg.com/data5/ANDROID/Default/2023/5/304570839/AQ/JK/UW/15957788/product-jpeg-500x500.jpg',
+        ],
+        'primaryImage':
+            'https://5.imimg.com/data5/ANDROID/Default/2023/5/304570839/AQ/JK/UW/15957788/product-jpeg-500x500.jpg',
         'brand': 'Coach',
         'sku': 'COACH-BAG-001',
         'stock': 15,
@@ -333,8 +351,11 @@ class FirestoreDataSeeder {
         'price': 39.99,
         'oldPrice': 59.99,
         'currency': 'USD',
-        'images': ['assets/images/yoga_mat.jpg'],
-        'primaryImage': 'assets/images/yoga_mat.jpg',
+        'images': [
+          'https://sunnyhealthfitness.com/cdn/shop/files/7-sunny-health-fitness-premium-extra-thick-exercise-yoga-mat-blue-sf-em03-pk_750x.jpg?v=1740525793',
+        ],
+        'primaryImage':
+            'https://sunnyhealthfitness.com/cdn/shop/files/7-sunny-health-fitness-premium-extra-thick-exercise-yoga-mat-blue-sf-em03-pk_750x.jpg?v=1740525793',
         'brand': 'Manduka',
         'sku': 'MANDUKA-MAT-001',
         'stock': 25,
