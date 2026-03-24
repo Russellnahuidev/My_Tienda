@@ -16,7 +16,7 @@ class WishlistScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'Wishlist screen',
+          'My Wishlist',
           style: AppTextStyles.withColor(
             AppTextStyles.h3,
             isDark ? Colors.white : Colors.black,
@@ -146,10 +146,13 @@ class WishlistScreen extends StatelessWidget {
             ],
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => _addAllToCart(),
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(12),
+              ),
             ),
             child: Text(
               'Add All to Cart',
@@ -162,6 +165,187 @@ class WishlistScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  //Add all wishlist items to cart
+  Future<void> _addAllToCart() async {
+    final wishlistController = Get.find<WishlistController>();
+    final cartController = Get.find<CartController>();
+
+    if (wishlistController.isEmpty) {
+      Get.snackbar(
+        'Empty Wishlist',
+        'Your wishlist is emty',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 2),
+      );
+      return;
+    }
+
+    //show cconfirmation dialog
+    final confirmed = await _showAddAllConfirmDialog();
+    if (!confirmed) return;
+
+    //Show loading dialg
+    Get.dialog(
+      PopScope(
+        canPop: false,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      barrierDismissible: false,
+    );
+
+    int successCount = 0;
+    int failureCount = 0;
+    List<String> failedProducts = [];
+
+    //Add each wishlist item to cart
+    for (var wishlistItem in wishlistController.wishlistItems) {
+      final product = wishlistItem.product;
+
+      //Check if product has sizes
+      final availableSizes = _getProductSizes(product);
+      String? selectedSize;
+
+      if (availableSizes.isNotEmpty) {
+        //for prducts with sizes, user the first available sizes
+        selectedSize = availableSizes.first;
+      }
+
+      try {
+        final success = await cartController.addToCart(
+          product: product,
+          quantity: 1,
+          selectedSize: selectedSize,
+          showNotification: false, //Suppress individual notidications
+        );
+
+        if (success) {
+          successCount++;
+        } else {
+          failureCount++;
+          failedProducts.add(product.name);
+        }
+      } catch (e) {
+        failureCount++;
+        failedProducts.add(product.name);
+        print('Error adding ${product.name} to cart: $e');
+      }
+    }
+
+    //Close loading dialog -ensure it's closed
+    try {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+    } catch (e) {
+      //Force close any open dialogs
+      while (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+    }
+
+    //Small delay to ensure dialog is closed before showing snackbar
+    await Future.delayed(Duration(milliseconds: 200));
+
+    //show result notification
+    if (successCount > 0 && failureCount == 0) {
+      Get.snackbar(
+        'Partially',
+        '$successCount items added to cart',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } else if (successCount > 0 && failureCount > 0) {
+      Get.snackbar(
+        'Partially Added',
+        '$successCount items added, $failureCount failed',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.orange,
+        colorText: Colors.white,
+      );
+    } else {
+      Get.snackbar(
+        'Failed',
+        'Failed to add items to cart. Please try again',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  //show confirmation dialog for adding all items to cart
+  Future<bool> _showAddAllConfirmDialog() async {
+    final wishlistController = Get.find<WishlistController>();
+    final itemCount = wishlistController.itemCount;
+
+    return await Get.dialog<bool>(
+          AlertDialog(
+            backgroundColor: Theme.of(Get.context!).cardColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(
+              'Add All to Cart',
+              style: AppTextStyles.withColor(
+                AppTextStyles.h3,
+                Theme.of(Get.context!).textTheme.headlineMedium!.color!,
+              ),
+            ),
+            content: Text(
+              'Add all $itemCount items from your wishlist to cart?\n\nProducts sizes will use first available size.',
+              style: AppTextStyles.withColor(
+                AppTextStyles.bodyMedium,
+                Theme.of(Get.context!).textTheme.bodyMedium!.color!,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(result: false),
+                child: Text(
+                  'Cancel',
+                  style: AppTextStyles.withColor(
+                    AppTextStyles.bodyMedium,
+                    Colors.grey[600]!,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => Get.back(result: true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(Get.context!).primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  'Add All',
+                  style: AppTextStyles.withColor(
+                    AppTextStyles.bodyMedium,
+                    Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  //Get avilable sizes for a product
+  List<String> _getProductSizes(Product product) {
+    if (product.specifications.containsKey('sizes')) {
+      final sizes = product.specifications['sizes'];
+      if (sizes is List) {
+        return sizes.cast<String>();
+      }
+    }
+    return [];
   }
 
   Widget _buildWishListItem(BuildContext context, Product product) {
