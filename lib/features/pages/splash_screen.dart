@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     //Navigate based on auth state
     if (authController.isfirsTime) {
       Get.off(() => OnboardingScreen());
-    } else if (authController.isloggedIn) {
+    } else if (authController.isLoggedIn) {
       Get.off(() => MainScreen());
     } else {
       Get.off(() => SigninScreen());
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(milliseconds: 2500), () {
       if (authController.isfirsTime) {
         Get.off(() => OnboardingScreen());
-      } else if (authController.isloggedIn) {
+      } else if (authController.isLoggedIn) {
         Get.off(() => MainScreen());
       } else {
         Get.off(() => SigninScreen());

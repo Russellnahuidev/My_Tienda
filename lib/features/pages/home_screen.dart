@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/controllers/theme_controller.dart';
 import 'package:my_tienda/features/pages/all_products_screen.dart';
-import 'package:my_tienda/features/pages/card_screen.dart';
+import 'package:my_tienda/features/pages/cart_screen.dart';
 import 'package:my_tienda/features/notifications/view/notifications_screen.dart';
 import 'package:my_tienda/features/widgets/category_chips.dart';
 import 'package:my_tienda/features/widgets/custom_search_bar.dart';
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
 
                   //card button
                   IconButton(
-                    onPressed: () => Get.to(() => CardScreen()),
+                    onPressed: () => Get.to(() => CartScreen()),
                     icon: Icon(Icons.shopping_bag_outlined),
                   ),
 

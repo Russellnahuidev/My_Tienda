@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
+import 'package:my_tienda/controllers/cart_controller.dart';
 import 'package:my_tienda/controllers/category_controller.dart';
 import 'package:my_tienda/controllers/navigation_controller.dart';
 import 'package:my_tienda/controllers/product_controller.dart';
@@ -22,6 +23,7 @@ void main() async {
   Get.put(ProductController());
   Get.put(CategoryController());
   Get.put(WishlistController());
+  Get.put(CartController());
   Get.put(NavigationController());
 
   //The line below is used to seed sample data to firestore (for testing only)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_tienda/controllers/cart_controller.dart';
 import 'package:my_tienda/controllers/wishlist_controller.dart';
 import 'package:my_tienda/models/product.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
@@ -234,7 +235,7 @@ class WishlistScreen extends StatelessWidget {
                       Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () => _addToCartFromWishlist(product),
                             icon: Icon(Icons.shopping_cart_outlined),
                             color: Theme.of(context).primaryColor,
                           ),
@@ -256,6 +257,104 @@ class WishlistScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  //add to product to cart from wiahlist
+  Future<void> _addToCartFromWishlist(Product product) async {
+    final cartController = Get.find<CartController>();
+
+    //Check if product has sizes and required selection
+    if (product.specifications.containsKey('sizes')) {
+      final sizes = product.specifications['sizes'];
+      if (sizes is List && sizes.isNotEmpty) {
+        _showSizesSelectionDialog(product, cartController);
+        return;
+      }
+    }
+
+    //Add to cart without sizes selection
+    await cartController.addToCart(product: product, quantity: 1);
+  }
+
+  //show size selection dialog for adding to cart
+  void _showSizesSelectionDialog(
+    Product product,
+    CartController cartController,
+  ) {
+    final isDark = Theme.of(Get.context!).brightness == Brightness.dark;
+    final sizes = List<String>.from(product.specifications['sizes'] ?? []);
+
+    showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(16),
+          ),
+          title: Text(
+            'Select Size',
+            style: AppTextStyles.withColor(
+              AppTextStyles.h3,
+              Theme.of(context).textTheme.headlineMedium!.color!,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Choose a size for "${product.name}"',
+                style: AppTextStyles.withColor(
+                  AppTextStyles.bodyMedium,
+                  Theme.of(context).textTheme.bodyMedium!.color!,
+                ),
+              ),
+              SizedBox(height: 16),
+              Wrap(
+                spacing: 8,
+                children: sizes.map((size) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      Get.back();
+                      await cartController.addToCart(
+                        product: product,
+                        quantity: 1,
+                        selectedSize: size,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      size,
+                      style: AppTextStyles.withColor(
+                        AppTextStyles.buttonMedium,
+                        Colors.white,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: Text(
+                'Canel',
+                style: AppTextStyles.withColor(
+                  AppTextStyles.buttonMedium,
+                  isDark ? Colors.grey[400]! : Colors.grey[600]!,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

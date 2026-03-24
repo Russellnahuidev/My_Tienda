@@ -37,7 +37,7 @@ class WishlistController extends GetxController {
     final authController = Get.find<AuthController>();
 
     //Listen to auth changes
-    ever(authController.isloggedIn.obs, (bool isLoggedIn) {
+    ever(authController.isLoggedIn.obs, (bool isLoggedIn) {
       if (isLoggedIn) {
         //User signed in, load their wishlist
         loadWishlistItems();

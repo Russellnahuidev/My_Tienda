@@ -16,7 +16,7 @@ class AuthController extends GetxController {
   );
 
   bool get isfirsTime => _isFirstTime.value;
-  bool get isloggedIn => _isLoggedIn.value;
+  bool get isLoggedIn => _isLoggedIn.value;
   User? get user => _user.value;
   bool get isLoading => _isLoading.value;
   String? get userEmail => _user.value?.email;
