@@ -1,33 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:my_tienda/controllers/address_controller.dart';
 import 'package:my_tienda/services/firebase_auth_service.dart';
 import 'package:my_tienda/services/firestore_services.dart';
 
 class AuthController extends GetxController {
-  final _storage = GetStorage();
-
   final RxBool _isFirstTime = true.obs;
-  final RxBool _isLoggedIn = true.obs;
-  final Rx<User?> _user = Rx<User?>(null);
   final RxBool _isLoading = false.obs;
+  final RxBool _isLoggedIn = true.obs;
+  final _storage = GetStorage();
+  final Rx<User?> _user = Rx<User?>(null);
   final Rx<Map<String, dynamic>?> _userDcoment = Rx<Map<String, dynamic>?>(
     null,
   );
-
-  bool get isfirsTime => _isFirstTime.value;
-  bool get isLoggedIn => _isLoggedIn.value;
-  User? get user => _user.value;
-  bool get isLoading => _isLoading.value;
-  String? get userEmail => _user.value?.email;
-  String? get userDisplayName => _user.value?.displayName;
-  Map<String, dynamic>? get userDocument => _userDcoment.value;
-  String? get userName =>
-      _userDcoment.value?['name'] ?? _user.value?.displayName;
-  String? get userPhone => _userDcoment.value?['phoneNumber'];
-  List<dynamic> get userAddresses => _userDcoment.value?['addresses'];
-  Map<String, dynamic>? get userPreferences =>
-      _userDcoment.value?['preferences'];
 
   @override
   void onInit() {
@@ -36,42 +23,29 @@ class AuthController extends GetxController {
     _listenToAuthChanges();
   }
 
-  void _loadInitialState() {
-    _isFirstTime.value = _storage.read('isFirstTime') ?? true;
-    //check Firebase aut state instead of local storage
-    _user.value = FirebaseAuthService.currentUser;
-    _isLoggedIn.value = FirebaseAuthService.isSignedIn;
+  bool get isfirsTime => _isFirstTime.value;
 
-    //Load user document if user is already signed in
-    if (_user.value != null) {
-      _loadUserDocument(_user.value!.uid);
-    }
-  }
+  bool get isLoggedIn => _isLoggedIn.value;
 
-  //Load user document from Firestore
-  Future<void> _loadUserDocument(String uid) async {
-    try {
-      final userDoc = await FirestoreServices.getUserDocument(uid);
-      _userDcoment.value = userDoc;
-    } catch (e) {
-      print('Error Loading user document: $e');
-    }
-  }
+  User? get user => _user.value;
 
-  void _listenToAuthChanges() {
-    FirebaseAuthService.authStateCchanges.listen((User? user) {
-      _user.value = user;
-      _isLoggedIn.value = user != null;
+  bool get isLoading => _isLoading.value;
 
-      if (user != null) {
-        //Load user document from Firestore
-        _loadUserDocument(user.uid);
-      } else {
-        //Clear user document when signed out
-        _userDcoment.value = null;
-      }
-    });
-  }
+  String? get userEmail => _user.value?.email;
+
+  String? get userDisplayName => _user.value?.displayName;
+
+  Map<String, dynamic>? get userDocument => _userDcoment.value;
+
+  String? get userName =>
+      _userDcoment.value?['name'] ?? _user.value?.displayName;
+
+  String? get userPhone => _userDcoment.value?['phoneNumber'];
+
+  List<dynamic> get userAddresses => _userDcoment.value?['addresses'];
+
+  Map<String, dynamic>? get userPreferences =>
+      _userDcoment.value?['preferences'];
 
   void setFirstTimeDone() {
     _isFirstTime.value = false;
@@ -228,5 +202,52 @@ class AuthController extends GetxController {
     } finally {
       _isLoading.value = false;
     }
+  }
+
+  void _loadInitialState() {
+    _isFirstTime.value = _storage.read('isFirstTime') ?? true;
+    //check Firebase aut state instead of local storage
+    _user.value = FirebaseAuthService.currentUser;
+    _isLoggedIn.value = FirebaseAuthService.isSignedIn;
+
+    //Load user document if user is already signed in
+    if (_user.value != null) {
+      _loadUserDocument(_user.value!.uid);
+    }
+  }
+
+  //Load user document from Firestore
+  Future<void> _loadUserDocument(String uid) async {
+    try {
+      final userDoc = await FirestoreServices.getUserDocument(uid);
+      _userDcoment.value = userDoc;
+    } catch (e) {
+      print('Error Loading user document: $e');
+    }
+  }
+
+  void _listenToAuthChanges() {
+    FirebaseAuthService.authStateCchanges.listen((User? user) {
+      _user.value = user;
+      _isLoggedIn.value = user != null;
+
+      if (user != null) {
+        //Load user document from Firestore
+        _loadUserDocument(user.uid);
+
+        //Reset address controller to load addresses for the new user
+        if (Get.isRegistered<AddressController>()) {
+          Get.find<AddressController>().loadAddresses();
+        }
+      } else {
+        //Clear user document when signed out
+        _userDcoment.value = null;
+
+        //Reset address controller when user logs out
+        if (Get.isRegistered<AddressController>()) {
+          Get.find<AddressController>().loadAddresses();
+        }
+      }
+    });
   }
 }

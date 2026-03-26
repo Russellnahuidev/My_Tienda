@@ -6,11 +6,14 @@ class AddressCard extends StatelessWidget {
   final Address address;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback? onSetDefault;
+
   const AddressCard({
     super.key,
     required this.address,
     required this.onEdit,
     required this.onDelete,
+    this.onSetDefault,
   });
 
   @override
@@ -160,6 +163,24 @@ class AddressCard extends StatelessWidget {
                   ),
                 ),
               ),
+              if (!address.isDefault) ...[
+                Container(
+                  width: 1,
+                  height: 24,
+                  color: isDark ? Colors.grey[800] : Colors.grey[200],
+                ),
+                Expanded(
+                  child: TextButton.icon(
+                    onPressed: onSetDefault,
+                    icon: Icon(Icons.check_circle_outline, size: 18),
+                    label: Text('Set Default'),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      foregroundColor: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ],
