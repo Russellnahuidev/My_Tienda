@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
-import 'package:my_tienda/features/main_screen.dart';
-import 'package:my_tienda/features/onboarding_screen.dart';
-import 'package:my_tienda/features/signin_screen.dart';
+import 'package:my_tienda/features/pages/main_screen.dart';
+import 'package:my_tienda/features/pages/onboarding_screen.dart';
+import 'package:my_tienda/features/auth/signin_screen.dart';
 
-class SplashScreen extends StatelessWidget {
-  SplashScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   final AuthController authController = Get.find<AuthController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  void _initializeApp() async {
+    // wait for Firebase auth state to be determined
+    await Future.delayed(Duration(milliseconds: 2500));
+
+    //Navigate based on auth state
+    if (authController.isfirsTime) {
+      Get.off(() => OnboardingScreen());
+    } else if (authController.isLoggedIn) {
+      Get.off(() => MainScreen());
+    } else {
+      Get.off(() => SigninScreen());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +42,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(Duration(milliseconds: 2500), () {
       if (authController.isfirsTime) {
         Get.off(() => OnboardingScreen());
-      } else if (authController.isloggedIn) {
+      } else if (authController.isLoggedIn) {
         Get.off(() => MainScreen());
       } else {
         Get.off(() => SigninScreen());

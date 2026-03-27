@@ -6,8 +6,8 @@ import 'package:my_tienda/features/help_center/views/screen/help_center_screen.d
 import 'package:my_tienda/features/my_orders/view/screens/my_orders_screen.dart';
 import 'package:my_tienda/features/shippin_address/shipping_address_screen.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
-import 'package:my_tienda/features/setting_screen.dart';
-import 'package:my_tienda/features/signin_screen.dart';
+import 'package:my_tienda/features/pages/setting_screen.dart';
+import 'package:my_tienda/features/auth/signin_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -52,6 +52,7 @@ class AccountScreen extends StatelessWidget {
 
   Widget _buildProfileSelection(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final AuthController authController = Get.find<AuthController>();
 
     return Container(
       width: double.infinity,
@@ -66,21 +67,24 @@ class AccountScreen extends StatelessWidget {
             radius: 50,
             backgroundImage: AssetImage('assets/images/avatar.jpg'),
           ),
-          Text(
-            'Russell Ñahui',
-            style: AppTextStyles.withColor(
-              AppTextStyles.h2,
-              Theme.of(context).textTheme.bodyLarge!.color!,
+          Obx(
+            () => Text(
+              authController.userName ?? 'User',
+              style: AppTextStyles.withColor(
+                AppTextStyles.h2,
+                Theme.of(context).textTheme.bodyLarge!.color!,
+              ),
             ),
           ),
 
           SizedBox(height: 4),
-
-          Text(
-            'russell.ñahui@gmail.com',
-            style: AppTextStyles.withColor(
-              AppTextStyles.bodyMedium,
-              isDark ? Colors.grey[400]! : Colors.grey[600]!,
+          Obx(
+            () => Text(
+              authController.userEmail ?? '',
+              style: AppTextStyles.withColor(
+                AppTextStyles.bodyMedium,
+                isDark ? Colors.grey[400]! : Colors.grey[600]!,
+              ),
             ),
           ),
 
@@ -234,11 +238,48 @@ class AccountScreen extends StatelessWidget {
 
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final AuthController authController =
                           Get.find<AuthController>();
-                      authController.logout();
-                      Get.offAll((SigninScreen()));
+
+                      //show loading indicator
+                      Get.dialog(
+                        Center(child: CircularProgressIndicator()),
+                        barrierDismissible: false,
+                      );
+                      try {
+                        final result = await authController.signOut();
+                        //close loading dialog
+                        Get.back();
+                        if (result.succes) {
+                          Get.snackbar(
+                            'Succes',
+                            result.message,
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white,
+                          );
+                          Get.offAll(() => SigninScreen());
+                        } else {
+                          Get.snackbar(
+                            'Error',
+                            result.message,
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      } catch (e) {
+                        //Close loading dialog
+                        Get.back();
+                        Get.snackbar(
+                          'Error',
+                          'An unexpected error occurred. Please try again.',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,

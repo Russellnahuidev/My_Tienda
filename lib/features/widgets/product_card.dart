@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_tienda/controllers/wishlist_controller.dart';
 import 'package:my_tienda/models/product.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
 
@@ -10,6 +12,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       constraints: BoxConstraints(maxWidth: screenWidth * 0.9),
       decoration: BoxDecoration(
@@ -35,13 +38,36 @@ class ProductCard extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: ClipRRect(
-                  borderRadius: BorderRadiusGeometry.vertical(
-                    top: Radius.circular(12),
-                  ),
-                  child: Image.asset(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                  child: Image.network(
                     product.imageUrl,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[300],
+                        child: Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 30,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
+                    },
+
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -50,16 +76,27 @@ class ProductCard extends StatelessWidget {
               Positioned(
                 right: 8,
                 top: 8,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: product.isFavorite
-                        ? Theme.of(context).primaryColor
-                        : isDark
-                        ? Colors.grey[400]
-                        : Colors.grey,
-                  ),
+                child: GetBuilder<WishlistController>(
+                  id: 'wishlist_${product.id}',
+                  builder: (wishlistController) {
+                    final isInWishlist = wishlistController.isProductInWishlist(
+                      product.id,
+                    );
+
+                    return IconButton(
+                      onPressed: () {
+                        wishlistController.toggleWishlist(product);
+                      },
+                      icon: Icon(
+                        isInWishlist ? Icons.favorite : Icons.favorite_border,
+                        color: isInWishlist
+                            ? Theme.of(context).primaryColor
+                            : isDark
+                            ? Colors.grey[400]
+                            : Colors.grey,
+                      ),
+                    );
+                  },
                 ),
               ),
               if (product.oldPrice != null)
@@ -67,7 +104,7 @@ class ProductCard extends StatelessWidget {
                   left: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(4),

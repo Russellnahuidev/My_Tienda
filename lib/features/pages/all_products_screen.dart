@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_tienda/features/pages/search_results_screen.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
 import 'package:my_tienda/features/widgets/filter_buttom_sheet.dart';
 import 'package:my_tienda/features/widgets/product_grid.dart';
@@ -31,7 +32,9 @@ class AllProductsScreen extends StatelessWidget {
         actions: [
           //search icon
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => SearchResultsScreen(searchQuery: ''));
+            },
             icon: Icon(
               Icons.search,
               color: isDark ? Colors.white : Colors.black,

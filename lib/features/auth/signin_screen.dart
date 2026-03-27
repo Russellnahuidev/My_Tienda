@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_tienda/controllers/auth_controller.dart';
 import 'package:my_tienda/utils/app_textstyles.dart';
-import 'package:my_tienda/features/forgot_password_screen.dart';
-import 'package:my_tienda/features/main_screen.dart';
-import 'package:my_tienda/features/sign_up_screen.dart';
+import 'package:my_tienda/features/auth/forgot_password_screen.dart';
+import 'package:my_tienda/features/pages/main_screen.dart';
+import 'package:my_tienda/features/auth/sign_up_screen.dart';
 import 'package:my_tienda/features/widgets/custom_textfield.dart';
 
 class SigninScreen extends StatelessWidget {
@@ -147,9 +147,88 @@ class SigninScreen extends StatelessWidget {
   }
 
   //sign in button onpressed
-  void _handleSignIn() {
+  void _handleSignIn() async {
+    //Validate input fields
+    if (_emailController.text.trim().isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please enter your email',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+
+      return;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please enter your password',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+
+      return;
+    }
+
+    if (!GetUtils.isEmail(_emailController.text.trim())) {
+      Get.snackbar(
+        'Error',
+        'Please enter a valid email address',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+
+      return;
+    }
+
     final AuthController authController = Get.find<AuthController>();
-    authController.login();
-    Get.offAll(() => MainScreen());
+
+    //Show loaging indicator
+    Get.dialog(
+      Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+    try {
+      final result = await authController.signIn(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      //close loading dialog
+      Get.back();
+
+      if (result.succes) {
+        Get.snackbar(
+          'Succes',
+          result.message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        Get.offAll(() => MainScreen());
+      } else {
+        Get.snackbar(
+          'Error',
+          result.message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      //Close loading dialog
+      Get.back();
+      Get.snackbar(
+        'Error',
+        'An unexpected error occurred. Please try again.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 }
